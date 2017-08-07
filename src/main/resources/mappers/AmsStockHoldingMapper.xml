@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pbs.ams.web.mappers.AmsStockHoldingMapper">
+  <resultMap id="BaseResultMap" type="com.pbs.ams.web.model.AmsStockHolding">
+    <id column="stock_holding_id" jdbcType="BIGINT" property="stockHoldingId" />
+    <result column="stock_account_id" jdbcType="BIGINT" property="stockAccountId" />
+    <result column="stock_id" jdbcType="BIGINT" property="stockId" />
+    <result column="position_holding" jdbcType="INTEGER" property="positionHolding" />
+    <result column="position_date" jdbcType="BIGINT" property="positionDate" />
+    <result column="position_cost" jdbcType="DECIMAL" property="positionCost" />
+    <result column="cost_value" jdbcType="DECIMAL" property="costValue" />
+    <result column="single_cost_value" jdbcType="DECIMAL" property="singleCostValue" />
+    <result column="profit_loss" jdbcType="VARCHAR" property="profitLoss" />
+    <result column="market_value" jdbcType="DECIMAL" property="marketValue" />
+    <result column="stockholder_account" jdbcType="VARCHAR" property="stockholderAccount" />
+    <result column="frozen_amount" jdbcType="INTEGER" property="frozenAmount" />
+    <result column="remaining" jdbcType="DECIMAL" property="remaining" />
+    <result column="transit_shares" jdbcType="INTEGER" property="transitShares" />
+    <result column="share_remaining" jdbcType="DECIMAL" property="shareRemaining" />
+    <result column="latest_price" jdbcType="DECIMAL" property="latestPrice" />
+    <result column="profit_rate" jdbcType="VARCHAR" property="profitRate" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    <result column="operator_id" jdbcType="BIGINT" property="operatorId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    stock_holding_id, stock_account_id, stock_id, position_holding, position_date, position_cost, 
+    cost_value, single_cost_value, profit_loss, market_value, stockholder_account, frozen_amount, 
+    remaining, transit_shares, share_remaining, latest_price, profit_rate, create_time, 
+    update_time, operator_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ams_stock_holding
+    where stock_holding_id = #{stockHoldingId,jdbcType=BIGINT}
+  </select>
+
+<!--查询持仓列表-->
+  <select id="selectStockHoldingWithDetail" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ams_stock_holding
+    where 1 = 1
+    <if test="positionDate!=null">
+      and position_date = ${positionDate}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null"> limit ${offset}, ${limit} </if>
+      <if test="offset == null"> limit ${limit} </if>
+    </if>
+  </select>
+
+  <!--查询条目数-->
+  <select id="selectStockHoldingWithDetailCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1)
+    FROM ams_stock_holding
+    where 1 = 1
+    <if test="positionDate!=null">
+      <where>
+        position_date = ${positionDate}
+      </where>
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ams_stock_holding
+    where stock_holding_id = #{stockHoldingId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.pbs.ams.web.model.AmsStockHolding">
+    insert into ams_stock_holding (stock_holding_id, stock_account_id, stock_id, 
+      position_holding, position_date, position_cost, 
+      cost_value, single_cost_value, profit_loss, 
+      market_value, stockholder_account, frozen_amount, 
+      remaining, transit_shares, share_remaining, 
+      latest_price, profit_rate, create_time, 
+      update_time, operator_id)
+    values (#{stockHoldingId,jdbcType=BIGINT}, #{stockAccountId,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, 
+      #{positionHolding,jdbcType=INTEGER}, #{positionDate,jdbcType=BIGINT}, #{positionCost,jdbcType=DECIMAL}, 
+      #{costValue,jdbcType=DECIMAL}, #{singleCostValue,jdbcType=DECIMAL}, #{profitLoss,jdbcType=VARCHAR}, 
+      #{marketValue,jdbcType=DECIMAL}, #{stockholderAccount,jdbcType=VARCHAR}, #{frozenAmount,jdbcType=INTEGER}, 
+      #{remaining,jdbcType=DECIMAL}, #{transitShares,jdbcType=INTEGER}, #{shareRemaining,jdbcType=DECIMAL}, 
+      #{latestPrice,jdbcType=DECIMAL}, #{profitRate,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT}, #{operatorId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pbs.ams.web.model.AmsStockHolding">
+    insert into ams_stock_holding
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stockHoldingId != null">
+        stock_holding_id,
+      </if>
+      <if test="stockAccountId != null">
+        stock_account_id,
+      </if>
+      <if test="stockId != null">
+        stock_id,
+      </if>
+      <if test="positionHolding != null">
+        position_holding,
+      </if>
+      <if test="positionDate != null">
+        position_date,
+      </if>
+      <if test="positionCost != null">
+        position_cost,
+      </if>
+      <if test="costValue != null">
+        cost_value,
+      </if>
+      <if test="singleCostValue != null">
+        single_cost_value,
+      </if>
+      <if test="profitLoss != null">
+        profit_loss,
+      </if>
+      <if test="marketValue != null">
+        market_value,
+      </if>
+      <if test="stockholderAccount != null">
+        stockholder_account,
+      </if>
+      <if test="frozenAmount != null">
+        frozen_amount,
+      </if>
+      <if test="remaining != null">
+        remaining,
+      </if>
+      <if test="transitShares != null">
+        transit_shares,
+      </if>
+      <if test="shareRemaining != null">
+        share_remaining,
+      </if>
+      <if test="latestPrice != null">
+        latest_price,
+      </if>
+      <if test="profitRate != null">
+        profit_rate,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="operatorId != null">
+        operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stockHoldingId != null">
+        #{stockHoldingId,jdbcType=BIGINT},
+      </if>
+      <if test="stockAccountId != null">
+        #{stockAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="stockId != null">
+        #{stockId,jdbcType=BIGINT},
+      </if>
+      <if test="positionHolding != null">
+        #{positionHolding,jdbcType=INTEGER},
+      </if>
+      <if test="positionDate != null">
+        #{positionDate,jdbcType=BIGINT},
+      </if>
+      <if test="positionCost != null">
+        #{positionCost,jdbcType=DECIMAL},
+      </if>
+      <if test="costValue != null">
+        #{costValue,jdbcType=DECIMAL},
+      </if>
+      <if test="singleCostValue != null">
+        #{singleCostValue,jdbcType=DECIMAL},
+      </if>
+      <if test="profitLoss != null">
+        #{profitLoss,jdbcType=VARCHAR},
+      </if>
+      <if test="marketValue != null">
+        #{marketValue,jdbcType=DECIMAL},
+      </if>
+      <if test="stockholderAccount != null">
+        #{stockholderAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="frozenAmount != null">
+        #{frozenAmount,jdbcType=INTEGER},
+      </if>
+      <if test="remaining != null">
+        #{remaining,jdbcType=DECIMAL},
+      </if>
+      <if test="transitShares != null">
+        #{transitShares,jdbcType=INTEGER},
+      </if>
+      <if test="shareRemaining != null">
+        #{shareRemaining,jdbcType=DECIMAL},
+      </if>
+      <if test="latestPrice != null">
+        #{latestPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="profitRate != null">
+        #{profitRate,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="operatorId != null">
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pbs.ams.web.model.AmsStockHolding">
+    update ams_stock_holding
+    <set>
+      <if test="stockAccountId != null">
+        stock_account_id = #{stockAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="stockId != null">
+        stock_id = #{stockId,jdbcType=BIGINT},
+      </if>
+      <if test="positionHolding != null">
+        position_holding = #{positionHolding,jdbcType=INTEGER},
+      </if>
+      <if test="positionDate != null">
+        position_date = #{positionDate,jdbcType=BIGINT},
+      </if>
+      <if test="positionCost != null">
+        position_cost = #{positionCost,jdbcType=DECIMAL},
+      </if>
+      <if test="costValue != null">
+        cost_value = #{costValue,jdbcType=DECIMAL},
+      </if>
+      <if test="singleCostValue != null">
+        single_cost_value = #{singleCostValue,jdbcType=DECIMAL},
+      </if>
+      <if test="profitLoss != null">
+        profit_loss = #{profitLoss,jdbcType=VARCHAR},
+      </if>
+      <if test="marketValue != null">
+        market_value = #{marketValue,jdbcType=DECIMAL},
+      </if>
+      <if test="stockholderAccount != null">
+        stockholder_account = #{stockholderAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="frozenAmount != null">
+        frozen_amount = #{frozenAmount,jdbcType=INTEGER},
+      </if>
+      <if test="remaining != null">
+        remaining = #{remaining,jdbcType=DECIMAL},
+      </if>
+      <if test="transitShares != null">
+        transit_shares = #{transitShares,jdbcType=INTEGER},
+      </if>
+      <if test="shareRemaining != null">
+        share_remaining = #{shareRemaining,jdbcType=DECIMAL},
+      </if>
+      <if test="latestPrice != null">
+        latest_price = #{latestPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="profitRate != null">
+        profit_rate = #{profitRate,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="operatorId != null">
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where stock_holding_id = #{stockHoldingId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pbs.ams.web.model.AmsStockHolding">
+    update ams_stock_holding
+    set stock_account_id = #{stockAccountId,jdbcType=BIGINT},
+      stock_id = #{stockId,jdbcType=BIGINT},
+      position_holding = #{positionHolding,jdbcType=INTEGER},
+      position_date = #{positionDate,jdbcType=BIGINT},
+      position_cost = #{positionCost,jdbcType=DECIMAL},
+      cost_value = #{costValue,jdbcType=DECIMAL},
+      single_cost_value = #{singleCostValue,jdbcType=DECIMAL},
+      profit_loss = #{profitLoss,jdbcType=VARCHAR},
+      market_value = #{marketValue,jdbcType=DECIMAL},
+      stockholder_account = #{stockholderAccount,jdbcType=VARCHAR},
+      frozen_amount = #{frozenAmount,jdbcType=INTEGER},
+      remaining = #{remaining,jdbcType=DECIMAL},
+      transit_shares = #{transitShares,jdbcType=INTEGER},
+      share_remaining = #{shareRemaining,jdbcType=DECIMAL},
+      latest_price = #{latestPrice,jdbcType=DECIMAL},
+      profit_rate = #{profitRate,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      operator_id = #{operatorId,jdbcType=BIGINT}
+    where stock_holding_id = #{stockHoldingId,jdbcType=BIGINT}
+  </update>
+  <insert id="insertIntoAmsStockHoldingSnaps">
+    insert into ams_stock_holding_snaps SELECT CAST(DATE_FORMAT(CURRENT_TIMESTAMP(3),'%Y%m%d%H%i%S%f')/1000 AS UNSIGNED),tb.* from ams_stock_holding as tb where stock_holding_id= #{stock_holding_id}
+  </insert>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+</mapper>

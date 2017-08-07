@@ -1,0 +1,13 @@
+[
+  {
+  "permissionId": "2",
+  "systemId": "1",
+  "pid": "1",
+  "name": "系统组织管理",
+  "type": "目录",
+  "permissionValue": "upms:system:read",
+  "uri": "/manage/system/index",
+  "icon": "",
+  "status": "正常"
+}
+]

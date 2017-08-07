@@ -1,0 +1,10 @@
+[
+  {
+    "systemId": "1",
+    "icon": "img",
+    "title": "权限管理系统",
+    "name": "ipb-upms-server",
+    "basepath": "http://ams.pbs.cn:1111",
+    "status": "正常"
+  }
+]

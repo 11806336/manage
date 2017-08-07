@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pbs.ams.web.mappers.AmsProductPuMapper">
+  <resultMap id="BaseResultMap" type="com.pbs.ams.web.model.amsProductPu">
+    <id column="product_trade_account_id" jdbcType="BIGINT" property="productPuId" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="product_unit_id" jdbcType="BIGINT" property="productUnitId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    product_pu_id, product_id, product_unit_id
+  </sql>
+  <select id="getProductIdByAccountId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ams_product_pu
+    where product_unit_id = #{productUnitId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ams_product_pu
+    where product_pu_id = #{productPuId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ams_product_pu
+    where product_pu_id = #{productPuId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.pbs.ams.web.model.amsProductPu">
+    insert into ams_product_pu (product_pu_id, product_id, product_unit_id
+      )
+    values (#{productPuId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{productUnitId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pbs.ams.web.model.amsProductPu">
+    insert into ams_product_pu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productPuId != null">
+        product_pu_id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="productUnitId != null">
+        product_unit_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productPuId != null">
+        #{productPuId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productUnitId != null">
+        #{productUnitId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pbs.ams.web.model.amsProductPu">
+    update ams_product_pu
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productUnitId != null">
+        product_unit_id = #{productUnitId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where product_pu_id = #{productPuId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pbs.ams.web.model.amsProductPu">
+    update ams_product_pu
+    set product_id = #{productId,jdbcType=BIGINT},
+      product_unit_id = #{productUnitId,jdbcType=BIGINT}
+    where product_pu_id = #{productPuId,jdbcType=BIGINT}
+  </update>
+  <insert id="insertIntoAmsProductAccountSnaps">
+    insert into ams_product_account_snaps SELECT CAST(DATE_FORMAT(CURRENT_TIMESTAMP(3),'%Y%m%d%H%i%S%f')/1000 AS UNSIGNED),tb.* from ams_product_pu as tb where product_pu_id= #{product_pu_id}
+  </insert>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+</mapper>

@@ -1,0 +1,12 @@
+[
+  {
+    "fee_templatete_id": "110",
+    "stock_category_name": "中山",
+    "commission_rate": "1200",
+    "minimum_commission": "1000",
+    "transfer_fee_rate": "0.3",
+    "minimum_charge_count": "200",
+    "buy_stamp_duty_rate": "0.001",
+    "sell_stamp_duty_rate": "0.004"
+  }
+]

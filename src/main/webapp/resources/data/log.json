@@ -1,0 +1,15 @@
+[
+ {
+  "logId": "3",
+  "description": "系统首页",
+  "username": "admin",
+  "startTime": "1494922548845",
+  "spendTime": "18",
+  "url": "http://upms.ipb.cn:1111/manage/system/index",
+  "method": "GET",
+  "parameter": "",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:53.0) Gecko/20100101 Firefox/53.0",
+  "ip": "127.0.0.1",
+  "permissions": "upms:system:read"
+}
+]

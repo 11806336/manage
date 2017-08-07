@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pbs.ams.web.mappers.AmsStockOrderExecutionMapper">
+  <resultMap id="BaseResultMap" type="com.pbs.ams.web.model.AmsStockOrderExecution">
+    <id column="stock_order_execution_id" jdbcType="BIGINT" property="stockOrderExecutionId" />
+    <result column="contract_id" jdbcType="VARCHAR" property="contractId" />
+    <result column="knock_price" jdbcType="DECIMAL" property="knockPrice" />
+    <result column="knock_qty" jdbcType="INTEGER" property="knockQty" />
+    <result column="knock_date" jdbcType="BIGINT" property="knockDate" />
+    <result column="knock_amount" jdbcType="DECIMAL" property="knockAmount" />
+    <result column="stock_order_type" jdbcType="BIT" property="stockOrderType" />
+    <result column="fee" jdbcType="DECIMAL" property="fee" />
+    <result column="operator_id" jdbcType="BIGINT" property="operatorId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    stock_order_execution_id, contract_id, knock_price, knock_qty, knock_date, knock_amount, 
+    stock_order_type, fee, operator_id
+  </sql>
+
+  <!--查询成交记录-->
+  <select id="selectStockOrderExecutionWithDetail" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ams_stock_order_execution
+    where 1 = 1
+    <if test="dateStart != null and dateEnd != null" >
+      and knock_date BETWEEN ${dateStart} AND ${dateEnd}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null"> limit ${offset}, ${limit} </if>
+      <if test="offset == null"> limit ${limit} </if>
+    </if>
+  </select>
+
+  <!--查询条目数-->
+  <select id="selectStockOrderExecutionWithDetailCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1)
+    FROM ams_stock_order_execution
+    where 1 = 1
+    <if test="dateStart != null and dateEnd != null" >
+      and knock_date BETWEEN ${dateStart} AND ${dateEnd}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ams_stock_order_execution
+    where stock_order_execution_id = #{stockOrderExecutionId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ams_stock_order_execution
+    where stock_order_execution_id = #{stockOrderExecutionId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.pbs.ams.web.model.AmsStockOrderExecution">
+    insert into ams_stock_order_execution (stock_order_execution_id, contract_id, 
+      knock_price, knock_qty, knock_date, 
+      knock_amount, stock_order_type, fee, 
+      operator_id)
+    values (#{stockOrderExecutionId,jdbcType=BIGINT}, #{contractId,jdbcType=VARCHAR}, 
+      #{knockPrice,jdbcType=DECIMAL}, #{knockQty,jdbcType=INTEGER}, #{knockDate,jdbcType=BIGINT}, 
+      #{knockAmount,jdbcType=DECIMAL}, #{stockOrderType,jdbcType=BIT}, #{fee,jdbcType=DECIMAL}, 
+      #{operatorId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pbs.ams.web.model.AmsStockOrderExecution">
+    insert into ams_stock_order_execution
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stockOrderExecutionId != null">
+        stock_order_execution_id,
+      </if>
+      <if test="contractId != null">
+        contract_id,
+      </if>
+      <if test="knockPrice != null">
+        knock_price,
+      </if>
+      <if test="knockQty != null">
+        knock_qty,
+      </if>
+      <if test="knockDate != null">
+        knock_date,
+      </if>
+      <if test="knockAmount != null">
+        knock_amount,
+      </if>
+      <if test="stockOrderType != null">
+        stock_order_type,
+      </if>
+      <if test="fee != null">
+        fee,
+      </if>
+      <if test="operatorId != null">
+        operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stockOrderExecutionId != null">
+        #{stockOrderExecutionId,jdbcType=BIGINT},
+      </if>
+      <if test="contractId != null">
+        #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="knockPrice != null">
+        #{knockPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="knockQty != null">
+        #{knockQty,jdbcType=INTEGER},
+      </if>
+      <if test="knockDate != null">
+        #{knockDate,jdbcType=BIGINT},
+      </if>
+      <if test="knockAmount != null">
+        #{knockAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="stockOrderType != null">
+        #{stockOrderType,jdbcType=BIT},
+      </if>
+      <if test="fee != null">
+        #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="operatorId != null">
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pbs.ams.web.model.AmsStockOrderExecution">
+    update ams_stock_order_execution
+    <set>
+      <if test="contractId != null">
+        contract_id = #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="knockPrice != null">
+        knock_price = #{knockPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="knockQty != null">
+        knock_qty = #{knockQty,jdbcType=INTEGER},
+      </if>
+      <if test="knockDate != null">
+        knock_date = #{knockDate,jdbcType=BIGINT},
+      </if>
+      <if test="knockAmount != null">
+        knock_amount = #{knockAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="stockOrderType != null">
+        stock_order_type = #{stockOrderType,jdbcType=BIT},
+      </if>
+      <if test="fee != null">
+        fee = #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="operatorId != null">
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where stock_order_execution_id = #{stockOrderExecutionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pbs.ams.web.model.AmsStockOrderExecution">
+    update ams_stock_order_execution
+    set contract_id = #{contractId,jdbcType=VARCHAR},
+      knock_price = #{knockPrice,jdbcType=DECIMAL},
+      knock_qty = #{knockQty,jdbcType=INTEGER},
+      knock_date = #{knockDate,jdbcType=BIGINT},
+      knock_amount = #{knockAmount,jdbcType=DECIMAL},
+      stock_order_type = #{stockOrderType,jdbcType=BIT},
+      fee = #{fee,jdbcType=DECIMAL},
+      operator_id = #{operatorId,jdbcType=BIGINT}
+    where stock_order_execution_id = #{stockOrderExecutionId,jdbcType=BIGINT}
+  </update>
+  <insert id="insertIntoAmsStockOrderExecutionSnaps">
+    insert into ams_stock_order_execution_snaps SELECT CAST(DATE_FORMAT(CURRENT_TIMESTAMP(3),'%Y%m%d%H%i%S%f')/1000 AS UNSIGNED),tb.* from ams_stock_order_execution as tb where stock_order_execution_id= #{stock_order_execution_id}
+  </insert>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+</mapper>
